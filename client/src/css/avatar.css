@@ -1,0 +1,24 @@
+.avatar-container{
+    margin: 0 10px;
+    position: relative;
+}
+
+.avatar-img{
+    border-radius: 10px;
+    width: 100%;
+    height: auto;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.24);
+}
+
+
+.avatar-status{
+    width: 10px;
+    height: 10px;
+    border: 2px white solid;
+    box-sizing:content-box;
+    border-radius: 50%;
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    z-index: 10px;
+}

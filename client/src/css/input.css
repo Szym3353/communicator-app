@@ -1,0 +1,36 @@
+.input-container{
+    width: 100%;
+    position: relative;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.input-label{ 
+    font-size: 14px; 
+    margin-bottom: 10px;
+}
+
+.input-input {
+    width: 100%;
+    padding: 5px 0 7px;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    border-bottom-color:#ccc ;
+    transition: 0.4s;
+    outline: none;
+}
+
+.input-input:focus{
+    padding: 5px 14px 7px;
+    transition: 0.4s;
+}
+
+.input-input:focus + .input-label{
+    color: blue;
+}
+
+.input-input ~ .input-focus-border{position: absolute; height: 36px; bottom: 0; right: 0; width: 0; transition: 0.4s;}
+.input-input:focus ~ .input-focus-border{width: 100%; transition: 0.4s; border: 2px solid;}
+

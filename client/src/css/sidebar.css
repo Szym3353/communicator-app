@@ -1,0 +1,159 @@
+/* Top user info */
+.sidebar-top {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.34);
+  z-index: 5;
+  position: relative;
+}
+
+.sidebar-user {
+  display: flex;
+}
+
+.sidebar-user-username {
+  font-size: 17px;
+  color: #222;
+  font-weight: 600;
+}
+
+.sidebar-user-code {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* Contacts */
+.sidebar-contacts {
+  flex-grow: 1;
+  overflow: scroll;
+}
+
+.sidebar-contacts-menu {
+  display: flex;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.sidebar-contacts-button {
+  flex-grow: 1;
+  background: white;
+  border: solid rgba(0, 0, 0, 0.2);
+  border-width: 0 1px 1px 0;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.25s ease-in;
+  color: rgb(124, 122, 255);
+}
+
+.sidebar-contacts-button:hover {
+  background-color: #eee;
+}
+
+.sidebar-contacts-button-selected,
+.sidebar-contacts-button-selected:hover {
+  background-color: rgba(124, 122, 255, 0.2);
+}
+
+.contacts-button-text {
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.single-contact-container {
+  display: flex;
+  padding: 10px 5px;
+  transition: 0.2s;
+  cursor: pointer;
+  align-items: center;
+}
+
+.single-contact-container:hover {
+  background-color: #ededed;
+}
+
+.single-contact-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  margin-right: 15px;
+}
+
+/* Find new contacts */
+.sidebar-invite-container {
+  padding: 10px;
+  width: 100%;
+  background-color: white;
+  box-shadow: -1px -2px 3px rgba(0, 0, 0, 0.34);
+}
+
+.sidebar-invite-button {
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  color: white;
+  background-color: rgb(124, 122, 255);
+  border-radius: 10px;
+  border: none;
+}
+
+.find-contacts-container {
+  padding: 0px 15px;
+  background-color: #fff;
+  transition: 0.3s;
+  height: 0;
+}
+
+.find-contacts-list {
+  height: 250px;
+  overflow: scroll;
+}
+
+.find-contacts-element {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin: 0 10px;
+  border-radius: 5px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+
+.find-contacts-element:hover {
+  background-color: #eee;
+}
+
+/* Sidebar user options */
+.sidebar-options-menu {
+  position: absolute;
+  list-style-type: none;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.44);
+  left: -100px;
+  background: white;
+  width: 150px;
+  height: 0;
+  overflow: hidden;
+  transition: 0.25s;
+}
+
+.sidebar-option {
+  border-bottom: 1px solid rgba(124, 122, 255, 0.2);
+  padding: 5px 7px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.25s;
+}
+.sidebar-option:last-child {
+  color: rgb(124, 122, 255);
+}
+
+.sidebar-option:hover {
+  background: rgba(124, 122, 255, 0.15);
+}
