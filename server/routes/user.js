@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const Chat = require("../models/chat");
+const bcrypt = require("bcrypt");
 
 router.get("/:id", async (req, res) => {
   try {
@@ -27,7 +29,6 @@ router.get("/:id", async (req, res) => {
 });
 
 router.get("/search/:username?/:code?", async (req, res) => {
-  console.log("SEARCH", req.params);
   try {
     let queryObject = {};
     if (req.params.username && req.params.username != "0")
@@ -46,6 +47,65 @@ router.get("/search/:username?/:code?", async (req, res) => {
       }))
     );
   } catch (error) {}
+});
+
+router.post("/update", async (req, res) => {
+  try {
+    let user = await User.findById(req.body.userId);
+    if (!user) return;
+
+    let { category, value, oldPassword, confirmNewPassword, newPassword } =
+      req.body.data;
+
+    if (
+      !category ||
+      !value ||
+      category?.trim() === "" ||
+      value?.trim() === ""
+    ) {
+      throw new Error("Incorrect value");
+    }
+
+    if (category === "password") {
+      if (
+        !oldPassword ||
+        oldPassword?.trim() === "" ||
+        !newPassword ||
+        newPassword?.trim() === "" ||
+        confirmNewPassword !== newPassword
+      )
+        throw new Error("Incorrect value");
+
+      let match = await bcrypt.compare(oldPassword, user.password);
+      if (!match) throw new Error("Wrong old password");
+
+      let password = await bcrypt.hash(newPassword, 12);
+      user.password = password;
+    } else if (category === "phone" || category === "lastStatus") {
+      user.settings = { ...user.settings, [category]: value };
+    } else {
+      user[category] = value;
+    }
+
+    await user.save();
+
+    //Update users contact
+    let users = await User.find({ "contacts.id": req.body.userId });
+
+    users.forEach(async (user, index) => {
+      if (user.defaultContact) return;
+      let contact = user.contacts.find((el) => el.id === req.body.userId);
+      if (Object.keys(contact._doc).includes(category)) {
+        contact[category] = value;
+      }
+      await user.save();
+    }, users);
+
+    let { pasword, ...userData } = user._doc;
+    res.send(userData);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = router;

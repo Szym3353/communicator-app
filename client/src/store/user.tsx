@@ -34,6 +34,11 @@ export type userData = {
   contacts: contact[];
   registered: string;
   code: string;
+  activityStatus: { currentStatus: activityStatus };
+  settings: {
+    phone: string | null;
+    lastStatus: activityStatus;
+  };
 };
 
 function setCookie(token: string) {
@@ -43,6 +48,37 @@ function setCookie(token: string) {
   ).toUTCString()}`;
   return decoded;
 }
+
+export const updateUser = createAsyncThunk<
+  userData,
+  | { category: string; value: string }
+  | {
+      oldPassword: string;
+      newPassword: string;
+      confirmNewPassword: string;
+    },
+  { state: RootState }
+>("user/updateUser", async (data, thunkApi) => {
+  try {
+    const { user } = thunkApi.getState();
+
+    if (user.isPending && user.requestId !== thunkApi.requestId) return;
+
+    let response = await fetch(
+      `${process.env.REACT_APP_SERVER_URL}user/update`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: fetchHeaders(),
+        body: JSON.stringify({ data, userId: user?.data?._id }),
+      }
+    );
+
+    return response.json();
+  } catch (error) {
+    return thunkApi.rejectWithValue(error);
+  }
+});
 
 export const getUser = createAsyncThunk<userData, string, { state: RootState }>(
   "user/getUser",
@@ -57,7 +93,7 @@ export const getUser = createAsyncThunk<userData, string, { state: RootState }>(
         {
           method: "GET",
           credentials: "include",
-          headers: fetchHeaders,
+          headers: fetchHeaders(),
         }
       );
 
@@ -119,7 +155,7 @@ const slice = createSlice({
     },
     updateContact: (state, action) => {
       let contact = state.data?.contacts.find(
-        (el) => el.id == action.payload.contactId
+        (el) => el.id === action.payload.contactId
       );
       if (!contact) return;
       contact.activityStatus.currentStatus = action.payload.status;
@@ -180,8 +216,25 @@ const slice = createSlice({
         state.requestId = null;
         state.data = payload;
         socket.emit("user:setStatus:online", { id: payload._id });
+        state.data.activityStatus.currentStatus = "online";
       })
       .addCase(getUser.rejected, (state, action) => {
+        state.isPending = false;
+        state.requestId = null;
+        state.error = action.error.message;
+      })
+      .addCase(updateUser.pending, (state, action) => {
+        if (state.isPending) return;
+        state.isPending = true;
+        state.requestId = action.meta.requestId;
+      })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        if (!action.payload || !state.data) return;
+        state.isPending = false;
+        state.requestId = null;
+        state.data = action.payload;
+      })
+      .addCase(updateUser.rejected, (state, action) => {
         state.isPending = false;
         state.requestId = null;
         state.error = action.error.message;

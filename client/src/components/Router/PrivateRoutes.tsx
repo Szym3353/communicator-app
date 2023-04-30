@@ -15,7 +15,7 @@ const PrivateRoutes = () => {
       let decoded: { id: string; email: string } = jwtDecode(token);
       dispatch(getUser(decoded.id));
     }
-  }, [token]);
+  }, [token, dispatch]);
 
   return token ? <Outlet /> : <Navigate to="/login" />;
 };

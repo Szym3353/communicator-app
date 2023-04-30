@@ -6,6 +6,7 @@ import PrivateRoutes from "./PrivateRoutes";
 import Login from "../../pages/Login";
 import Register from "../../pages/Register";
 import HomePage from "../../pages/HomePage";
+import Settings from "../../pages/Settings";
 
 const RouterComponent = () => {
   return (
@@ -15,6 +16,7 @@ const RouterComponent = () => {
         <Route path="/register" element={<Register />} />
         <Route element={<PrivateRoutes />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
       </Routes>
     </BrowserRouter>

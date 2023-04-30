@@ -8,7 +8,7 @@
 }
 
 body {
-  background: #eee;
+  background: #292929;
 }
 
 .container {
@@ -31,4 +31,9 @@ body {
 .scrollbar::-webkit-scrollbar-thumb {
   background-color: rgb(124, 122, 255);
   width: 5px;
+}
+
+.url,
+.url:visited {
+  color: rgb(124, 122, 255);
 }

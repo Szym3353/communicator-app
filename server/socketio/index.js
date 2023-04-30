@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const Chat = require("../models/chat");
 const userHandler = require("./user");
 const chatHandler = require("./chat");
 
@@ -24,6 +25,13 @@ module.exports = (io, socket) => {
           contactUser.activityStatus.socketId === ""
         )
           return;
+
+        await Chat.updateMany(
+          { "call.users": user._id },
+          { $pull: { "call.users": user._id } }
+        ).then(async () => {
+          await Chat.updateMany({ "call.users": [] }, { $unset: { call: 1 } });
+        });
 
         io.to(contactUser.activityStatus.socketId).emit(
           "contact:changeStatus",

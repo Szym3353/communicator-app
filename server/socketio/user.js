@@ -2,9 +2,13 @@ const User = require("../models/user");
 
 module.exports = (io, socket) => {
   const statusChange = async (payload) => {
-    let user = await User.findByIdAndUpdate(payload.id, {
-      activityStatus: { currentStatus: "online", socketId: socket.id },
-    });
+    let user = await User.findById(payload.id);
+
+    user.activityStatus = {
+      currentStatus: user.settings?.lastStatus || "online",
+      socketId: socket.id,
+    };
+    await user.save();
 
     user.contacts.forEach(async (el) => {
       if (el.defaultContact) return;

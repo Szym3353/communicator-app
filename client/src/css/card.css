@@ -1,0 +1,20 @@
+.card {
+  display: inline-block;
+  padding: 15px;
+  box-shadow: 1px 3px 8px rgba(0, 0, 0, 0.34);
+  background-color: #363636;
+  border-radius: 5px;
+}
+.card__title {
+  font-size: 27px;
+  margin: 0;
+  font-weight: 400;
+  color: rgb(124, 122, 255);
+}
+.card__subHeader {
+  font-size: 16px;
+  color: #222;
+}
+.card__content {
+  margin-top: 15px;
+}

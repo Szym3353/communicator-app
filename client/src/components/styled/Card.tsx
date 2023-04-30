@@ -1,5 +1,7 @@
 import React, { ReactNode } from "react";
 
+import "../../css/card.css";
+
 type props = {
   children: ReactNode;
   title?: string;
@@ -7,28 +9,6 @@ type props = {
   containerStyles?: React.CSSProperties;
   titleStyles?: React.CSSProperties;
   subHeaderStyles?: React.CSSProperties;
-};
-
-const styles = {
-  container: {
-    display: "inline-block",
-    padding: "15px",
-    boxShadow: "1px 3px 8px rgba(0,0,0,0.34)",
-    backgroundColor: "#fff",
-    borderRadius: "5px",
-  },
-  title: {
-    fontSize: "27px",
-    margin: 0,
-    fontWeight: 400,
-  },
-  subHeader: {
-    fontSize: "16px",
-    color: "#222",
-  },
-  content: {
-    marginTop: "15px",
-  },
 };
 
 const Card = ({
@@ -40,12 +20,18 @@ const Card = ({
   subHeaderStyles,
 }: props) => {
   return (
-    <div style={{ ...styles.container, ...containerStyles }}>
-      {title && <h3 style={{ ...styles.title, ...titleStyles }}>{title}</h3>}
-      {subHeader && (
-        <p style={{ ...styles.subHeader, ...subHeaderStyles }}>{subHeader}</p>
+    <div className="card" style={{ ...containerStyles }}>
+      {title && (
+        <h3 className="card__title" style={{ ...titleStyles }}>
+          {title}
+        </h3>
       )}
-      <div style={styles.content}>{children}</div>
+      {subHeader && (
+        <p className="card__subHeader" style={{ ...subHeaderStyles }}>
+          {subHeader}
+        </p>
+      )}
+      <div className="card__content">{children}</div>
     </div>
   );
 };

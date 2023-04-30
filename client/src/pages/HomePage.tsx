@@ -9,7 +9,7 @@ import "../css/homepage.css";
 
 const HomePage = () => {
   return (
-    <div className="homepage-container">
+    <div className="homepage">
       <SideBar />
       <ChatContainer />
     </div>

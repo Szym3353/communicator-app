@@ -37,11 +37,21 @@ router.get("/get/:id1/:id2/", async (req, res) => {
     });
 
     if (chat) {
+      if (
+        chat.messages.some(
+          (el) => el.read.findIndex((el2) => el2 === req.params.id1) === -1
+        )
+      ) {
+        await Chat.findByIdAndUpdate(chat._id, {
+          $addToSet: { "messages.$[].read": req.params.id1 },
+        });
+      }
       return res.json({
         contactUser: usersDetails[0],
         loggedUser: usersDetails[1],
         _id: chat._id,
         messages: [],
+        call: chat.call,
       });
     }
 
@@ -52,13 +62,13 @@ router.get("/get/:id1/:id2/", async (req, res) => {
         {
           author: req.params.id1,
           date: new Date().toISOString(),
-          content: "Example message expample message",
+          content: "Example message example message",
           read: [req.params.id1, req.params.id2],
         },
         {
           author: req.params.id2,
           date: new Date().toISOString(),
-          content: "Example message expample message",
+          content: "Example message example message",
           read: [req.params.id1, req.params.id2],
         },
       ],

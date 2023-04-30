@@ -44,7 +44,9 @@ const Login = () => {
           style={{ width: "100%", marginTop: "10px", marginBottom: "10px" }}
         />
       </form>
-      <Link to="/register">Don't have account yet? Register now.</Link>
+      <Link className="url" to="/register">
+        Don't have account yet? Register now.
+      </Link>
     </Card>
   );
 };

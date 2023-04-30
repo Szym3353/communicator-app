@@ -10,7 +10,7 @@ const ChatInput = () => {
   const [inputValue, setInputValue] = React.useState<string>("");
 
   const selectedChat = useSelector((state: RootState) =>
-    state.chat.data.chats.find((el) => el._id == state.chat.data.selectedChat)
+    state.chat.data.chats.find((el) => el._id === state.chat.data.selectedChat)
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -35,11 +35,11 @@ const ChatInput = () => {
   };
 
   return (
-    <div className="chat-input-container">
-      <form className="chat-input-form" onSubmit={handleSubmit}>
+    <div className="chat-input">
+      <form className="chat-input__form" onSubmit={handleSubmit}>
         <input
           onChange={(e) => setInputValue(e.target.value)}
-          className="chat-input"
+          className="chat-input__input"
           type="text"
           value={inputValue}
         />

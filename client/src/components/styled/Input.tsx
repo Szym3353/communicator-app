@@ -9,6 +9,7 @@ type props = {
   type?: React.HTMLInputTypeAttribute;
   color?: React.CSSProperties["color"];
   value?: string;
+  autocomplete?: "on" | "off";
 };
 
 const Input = ({
@@ -19,22 +20,24 @@ const Input = ({
   type = "text",
   value,
   color = "#0550b3",
+  autocomplete = "on",
 }: props) => {
   return (
-    <div className="input-container">
+    <div className="input">
       <input
         type={type}
         onChange={(e) => onChange(e.target.value)}
-        className="input-input"
+        className="input__textfield"
         value={value}
+        autoComplete={autocomplete}
         style={{
           ...inputStyles,
         }}
       />
-      <label className="input-label" style={{ ...labelStyles }}>
+      <label className="input__label" style={{ ...labelStyles }}>
         {label}:
       </label>
-      <span className="input-focus-border" style={{ borderColor: color }} />
+      {/*  <span className="input-focus-border" style={{ borderColor: color }} /> */}
     </div>
   );
 };

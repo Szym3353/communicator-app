@@ -103,6 +103,7 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+  console.log("test?");
   //Form validation
   let inputErrors = {};
   if (!req.body.email || req.body.email.trim() === "")

@@ -67,7 +67,9 @@ const Register = () => {
           type="submit"
         />
       </form>
-      <Link to="/login">Already have an account? Log in.</Link>
+      <Link className="url" to="/login">
+        Already have an account? Log in.
+      </Link>
     </Card>
   );
 };

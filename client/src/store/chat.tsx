@@ -4,8 +4,8 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { RootState } from ".";
-import Cookie from "js-cookie";
 import fetchHeaders from "../fetchHeaders";
+import { socket } from "../socket";
 
 export type message = {
   date: string;
@@ -15,17 +15,29 @@ export type message = {
   _id: string;
 };
 
-export type chat = {
-  loggedUser: { id: string; avatarURL: string; username: string };
-  contactUser: { id: string; avatarURL: string; username: string };
-  messages: message[];
-  _id: string;
+export type chatUser = {
+  id: string;
+  avatarURL: string;
+  username: string;
 };
 
-type chatsData = {
-  chats: chat[];
-  selected: string;
-  selectedChatroom: chat | null;
+export type callUser = {
+  mic?: boolean;
+  cam?: boolean;
+} & chatUser;
+
+export type call = {
+  started: string;
+  chatId: string;
+  accepted: boolean | null;
+};
+
+export type chat = {
+  loggedUser: chatUser;
+  contactUser: chatUser;
+  messages: message[];
+  _id: string;
+  call: (call & { users: string[] }) | null;
 };
 
 export const getMessages = createAsyncThunk<
@@ -38,11 +50,9 @@ export const getMessages = createAsyncThunk<
     if (chat.isPending && chat.requestId !== thunkApi.requestId) return;
 
     let selectedChatId = thunkApi.getState().chat.data.selectedChat;
-
     let selectedChat = thunkApi
       .getState()
-      .chat.data.chats.find((el) => el._id == selectedChatId);
-
+      .chat.data.chats.find((el) => el._id === selectedChatId);
     let messagesLength = selectedChat?.messages.length;
 
     let response = await fetch(
@@ -51,7 +61,7 @@ export const getMessages = createAsyncThunk<
       }/${messagesLength}`,
       {
         method: "GET",
-        headers: fetchHeaders,
+        headers: fetchHeaders(),
         credentials: "include",
       }
     );
@@ -77,7 +87,7 @@ export const getChatRoom = createAsyncThunk<chat, string, { state: RootState }>(
         }/${contactUser}`,
         {
           method: "GET",
-          headers: fetchHeaders,
+          headers: fetchHeaders(),
           credentials: "include",
         }
       );
@@ -110,8 +120,37 @@ const slice = createSlice({
         (el) => el._id === action.payload.chatId
       );
 
-      if (chat?.messages.find((el) => el.date == messageData.date)) return;
+      if (chat?.messages.find((el) => el.date === messageData.date)) return;
       chat?.messages.unshift(messageData);
+    },
+    readMessages: (
+      state,
+      { payload }: { payload: { chatId: string; userId: string } }
+    ) => {
+      if (!payload) return;
+
+      let chat = state.data.chats.find((el) => el._id === payload.chatId);
+      if (!chat) return;
+
+      chat.messages = chat.messages.map((message) =>
+        message.read.findIndex((el) => el === payload.userId) === -1
+          ? { ...message, read: [...message.read, payload.userId] }
+          : message
+      );
+    },
+    addUserToCall: (state, action) => {
+      let chat = state.data.chats.find(
+        (el) => el._id === action.payload.chatId
+      );
+      if (!chat || !chat.call) return;
+
+      chat.call.users.push();
+    },
+    setCall: (state, { payload }: { payload: call & { users: string[] } }) => {
+      let chat = state.data.chats.find((el) => el._id === payload.chatId);
+      if (!chat) return;
+
+      chat.call = payload;
     },
     clearChatStore: (state) => {
       state = initialState;
@@ -124,8 +163,14 @@ const slice = createSlice({
           (el) =>
             el.contactUser === action.payload.contactUser &&
             el.loggedUser === action.payload.loggedUser
-        ) == -1 && state.data.chats.push(action.payload);
+        ) === -1 && state.data.chats.push(action.payload);
         state.data.selectedChat = action.payload._id;
+
+        socket.emit("message:read:contact", {
+          chatId: action.payload._id,
+          messageAuthor: action.payload.contactUser.id,
+          userId: action.payload.loggedUser.id,
+        });
       })
       .addCase(getMessages.pending, (state, action) => {
         if (state.isPending) return;
@@ -151,4 +196,10 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
-export const { pushMessage, clearChatStore } = slice.actions;
+export const {
+  pushMessage,
+  addUserToCall,
+  clearChatStore,
+  setCall,
+  readMessages,
+} = slice.actions;

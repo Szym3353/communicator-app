@@ -7,8 +7,8 @@ import Avatar from "../../styled/Avatar";
 
 const styles = {
   newMessage: {
-    color: "#111",
-    fontWeight: "700",
+    color: "#eee",
+    fontWeight: "500",
   },
 };
 
@@ -17,20 +17,20 @@ const SingleContact = ({ contact }: { contact: contact }) => {
 
   return (
     <div
-      className="single-contact-container"
+      className="single-contact"
       onClick={() => dispatch(getChatRoom(contact.id))}
     >
       <Avatar
         status={contact.activityStatus.currentStatus}
-        size="50px"
+        size="40px"
         src={contact.avatarURL}
       />
       <p
-        className="single-contact-username"
+        className="single-contact__username"
         style={
           contact.newMessage
             ? styles.newMessage
-            : { color: "#555", fontWeight: 400 }
+            : { color: "rgba(255,255,255,0.55)", fontWeight: 400 }
         }
       >
         {contact.username}

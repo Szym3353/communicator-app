@@ -40,11 +40,16 @@
   opacity: 0.9;
 }
 
-.icon-button-clear {
+/* Clear modifier */
+
+.button--clear,
+.iconButton--clear {
   color: rgb(124, 122, 255);
-  background-color: #eee;
+  background-color: transparent;
+  box-shadow: none !important;
 }
 
-.icon-button-clear:hover {
+.button--clear:hover,
+.iconButton--clear:hover {
   background-color: rgba(124, 122, 255, 0.2);
 }

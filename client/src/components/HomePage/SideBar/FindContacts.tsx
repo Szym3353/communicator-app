@@ -4,9 +4,9 @@ import fetchHeaders from "../../../fetchHeaders";
 import { AppDispatch } from "../../../store";
 import { getChatRoom } from "../../../store/chat";
 import { addContact, contact } from "../../../store/user";
-import Avatar from "../../styled/Avatar";
 import Button from "../../styled/Button";
 import Input from "../../styled/Input";
+import SingleContact from "./SingleContact";
 
 const FindContacts = () => {
   let dispatch = useDispatch<AppDispatch>();
@@ -34,7 +34,7 @@ const FindContacts = () => {
       `${process.env.REACT_APP_SERVER_URL}user/search/${
         searchUsername || 0
       }/${searchCode}`,
-      { method: "GET", credentials: "include", headers: fetchHeaders }
+      { method: "GET", credentials: "include", headers: fetchHeaders() }
     )
       .then((response) => response.json())
       .then((data) => setSearchResults(data));
@@ -48,9 +48,10 @@ const FindContacts = () => {
 
   return (
     <>
-      <div className="sidebar-invite-container">
+      <div className="sidebar-invite">
         <Button
           onClick={handleShowFind}
+          variant="clear"
           style={{ width: "100%" }}
           value={
             showSearch ? (
@@ -64,7 +65,7 @@ const FindContacts = () => {
           }
         />
       </div>
-      <div ref={findContactRef} className="find-contacts-container">
+      <div ref={findContactRef} className="find-contacts">
         <Input
           label="Username"
           onChange={(value) => setSearchUsername(value)}
@@ -73,14 +74,10 @@ const FindContacts = () => {
           label="Invitation Code"
           onChange={(value) => setSearchCode(value)}
         />
-        <ul className="find-contacts-list scrollbar">
+        <ul className="find-contacts__list scrollbar">
           {searchResults.map((el) => (
-            <li
-              key={el.id}
-              className="find-contacts-element"
-              onClick={() => selectResult(el)}
-            >
-              <Avatar src={el.avatarURL} /> <span>{el.username}</span>
+            <li key={el.id} onClick={() => selectResult(el)}>
+              <SingleContact contact={el} />
             </li>
           ))}
         </ul>

@@ -4,12 +4,22 @@ import { activityStatus } from "../../store/user";
 import "../../css/avatar.css";
 
 type props = {
-  src: string;
+  src?: string;
   size?: string;
   status?: activityStatus;
+  style?: React.CSSProperties;
+  hoverInfo?: string;
+  hoverDirection?: "left" | "right";
 };
 
-const Avatar = ({ src, size, status }: props) => {
+const Avatar = ({
+  src,
+  size,
+  status,
+  style,
+  hoverInfo,
+  hoverDirection,
+}: props) => {
   const getColorStatus = () => {
     switch (status) {
       case "online":
@@ -28,13 +38,27 @@ const Avatar = ({ src, size, status }: props) => {
   };
 
   return (
-    <div className="avatar-container" style={{ width: size || "40px" }}>
-      <img className="avatar-img" src={src} />
-      {status && (
-        <div
-          className="avatar-status"
-          style={{ backgroundColor: getColorStatus() }}
-        ></div>
+    <div className="avatar" style={{ width: size || "40px", ...style }}>
+      {src && (
+        <>
+          <img className="avatar__img" src={src} alt="User avatar." />
+          {status && (
+            <div
+              className="avatar__status"
+              style={{ backgroundColor: getColorStatus() }}
+            ></div>
+          )}
+          {hoverInfo && (
+            <p
+              className="avatar__description"
+              style={
+                hoverDirection === "left" ? { left: "5px" } : { right: "5px" }
+              }
+            >
+              {hoverInfo}
+            </p>
+          )}
+        </>
       )}
     </div>
   );

@@ -11,6 +11,10 @@ const userSchema = new Schema(
     country: String,
     registered: String,
     code: String,
+    settings: {
+      phone: String,
+      lastStatus: String,
+    },
     activityStatus: {
       currentStatus: String,
       socketId: String,

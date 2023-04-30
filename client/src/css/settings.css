@@ -1,0 +1,72 @@
+.settings {
+  display: flex;
+  width: 95vw;
+  height: 95vh;
+}
+
+/*Settings menu*/
+.settings-menu {
+  list-style-type: none;
+  flex-grow: 2;
+  max-width: 300px;
+}
+
+.settings-menu__category {
+  padding: 10px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.settings-menu-category__title {
+  font-size: 16px;
+  font-weight: 200;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.settings-menu-category__options {
+  list-style-type: none;
+}
+
+.settings-menu-category__option {
+  color: rgba(255, 255, 255, 0.9);
+  padding: 8px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.settings-menu-category__option:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/*Settings content*/
+.settings-content {
+  flex-grow: 10;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-content__title {
+  margin-bottom: 10px;
+  color: rgb(124, 122, 255);
+}
+
+.settings-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.settings-option__info {
+  color: white;
+  margin-right: 40px;
+}
+
+.settings-option__title {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-right: 5px;
+}

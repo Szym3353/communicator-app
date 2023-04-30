@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function useClickObserver(ref: any) {
+export default function useClickObserver(ref: React.RefObject<any>) {
   const [show, setShow] = React.useState<boolean>(false);
 
   const handleClickOutside = (event: MouseEvent) => {

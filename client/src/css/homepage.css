@@ -1,46 +1,49 @@
-.homepage-container {
+.homepage {
   width: 100vw;
   height: 100vh;
   display: flex;
 }
 
-.homepage-sidebar-container {
+.sidebar {
   width: 350px;
   height: 100%;
-  border-right: 1px solid #999;
-  background-color: rgba(255, 255, 255, 0.9);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   z-index: 100;
   transition: 0.3s ease-out;
+  position: absolute;
 }
 
-@media screen and (max-width: 800px) {
-  .homepage-sidebar-container {
-    position: absolute;
-    width: 0;
-  }
-}
-
-.homepage-chat-container {
+.chat {
   flex-grow: 1;
   position: relative;
   display: flex;
   flex-direction: column;
+  background-color: #404040;
+  margin-left: 350px;
+}
+@media screen and (max-width: 800px) {
+  .sidebar {
+    position: absolute;
+    left: -350px;
+  }
+  .chat {
+    margin-left: 0;
+  }
 }
 
-.homepage-chat-null {
+.chat-null {
   font-size: 45px;
   font-weight: 100;
-  color: rgba(0, 0, 0, 0.3);
+  color: rgba(124, 122, 255, 0.5);
   text-align: center;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.homepage-chat-null > span {
+.chat-null > .chat-null__icon {
   font-size: 120px;
-  opacity: 0.3;
+  opacity: 0.5;
 }
